@@ -1,0 +1,36 @@
+name: Publish website
+
+on:
+  push:
+    branches: [ main ]   # change to your branch name if different
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Build your site (examples — pick one or add your own)
+      # If plain HTML / no build needed → skip these build steps
+      # If Jekyll:
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with: ruby-version: '3.2'
+      - run: bundle install
+      - run: bundle exec jekyll build   # output goes to ./_site
+
+      # Or if Hugo / npm / Vite etc.:
+      # - uses: actions/setup-node@v4
+      #   with: node-version: 20
+      # - run: npm ci
+      # - run: npm run build   # output usually in ./public or ./dist or ./build
+
+      # Push finished files to public repo
+      - name: Deploy to public repo
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+          external_repository: spgoyal/spgoyal.github.io   # your public repo
+          publish_dir: ./_site                             # CHANGE THIS to your output folder: ./_site (Jekyll), ./public (Hugo), ./dist (many JS frameworks), ./build etc.
+          publish_branch: main
+          force_orphan: true                               # optional: cleans old files each time
