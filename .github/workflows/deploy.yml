@@ -35,3 +35,5 @@ jobs:
           publish_dir: ./_site                             # CHANGE THIS to your output folder: ./_site (Jekyll), ./public (Hugo), ./dist (many JS frameworks), ./build etc.
           publish_branch: main
           force_orphan: true                               # optional: cleans old files each time
+
+
